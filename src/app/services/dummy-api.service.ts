@@ -40,7 +40,7 @@ export class DummyApiService {
   }
   
 
-  deleteTodoData(todoId: string): Observable<any> {
+  deleteTodoData(todoId: number): Observable<any> {
     const url = `${this.apiUrl}/${todoId}`;
     return this.http.delete<any>(url);
   }

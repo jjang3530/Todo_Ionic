@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit Todo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="edit-todo-content">
+    <ion-textarea [(ngModel)]="todoMessage" placeholder="Enter todo message" rows="6"></ion-textarea>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button fill="solid" color="primary" (click)="save()">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
