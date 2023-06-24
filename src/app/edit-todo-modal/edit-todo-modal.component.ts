@@ -8,19 +8,21 @@ import { Todo } from '../models/todo.model';
   styleUrls: ['./edit-todo-modal.component.scss']
 })
 export class EditTodoModalComponent implements OnInit {
-  @Input() todo!: Todo; // Input property to receive the todo object
+  @Input() todo!: Todo | undefined; // Input property to receive the todo object
 
   todoMessage!: string;
 
   constructor(private modalController: ModalController) {}
 
   ngOnInit() {
-    this.todoMessage = this.todo.todo; // Set the initial value of todoMessage
+    this.todoMessage = this.todo?.todo ?? ''; // Set the initial value of todoMessage
   }
 
   save() {
-    this.todo.todo = this.todoMessage;
-    this.modalController.dismiss(this.todo, 'save');
+    if (this.todo) {
+      this.todo.todo = this.todoMessage;
+      this.modalController.dismiss(this.todo, 'save');
+    }
   }
 
   cancel() {
