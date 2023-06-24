@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DummyApiService } from './../services/dummy-api.service';
 import { ActionSheetController } from '@ionic/angular';
 import { Todo } from '../models/todo.model';
@@ -11,7 +11,7 @@ import { TodoShareService } from '../services/todo-share.service';
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss']
 })
-export class Tab3Page {
+export class Tab3Page implements OnInit {
   completedTodos: Todo[] = [];
 
   dumyUpdate = {

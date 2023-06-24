@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { DummyApiService } from './../services/dummy-api.service';
 import { Todo } from '../models/todo.model';
@@ -12,7 +12,7 @@ import { TodoShareService } from '../services/todo-share.service';
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page {
+export class Tab1Page  implements OnInit {
   todos: Todo[] = [];
 
   dumyUpdate = {

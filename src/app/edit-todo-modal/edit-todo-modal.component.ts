@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Todo } from '../models/todo.model';
 
@@ -7,7 +7,7 @@ import { Todo } from '../models/todo.model';
   templateUrl: './edit-todo-modal.component.html',
   styleUrls: ['./edit-todo-modal.component.scss']
 })
-export class EditTodoModalComponent {
+export class EditTodoModalComponent implements OnInit {
   @Input() todo!: Todo; // Input property to receive the todo object
 
   todoMessage!: string;
