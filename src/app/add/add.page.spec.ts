@@ -1,27 +1,27 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { IonicModule, NavController } from '@ionic/angular';
-import { Tab2Page } from './tab2.page';
+import { AddPage } from './add.page';
 import { HttpClientModule } from '@angular/common/http';
-import { DummyApiService } from './../services/dummy-api.service';
+import { DummyApiService } from '../services/dummy-api.service';
 import { TodoShareService } from '../services/todo-share.service';
 import { of } from 'rxjs';
 import { Todo } from '../models/todo.model';
 
-describe('Tab2Page', () => {
-  let component: Tab2Page;
-  let fixture: ComponentFixture<Tab2Page>;
+describe('AddPage', () => {
+  let component: AddPage;
+  let fixture: ComponentFixture<AddPage>;
   let dummyApiService: DummyApiService;
   let navController: NavController;
   let todoShareService: TodoShareService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [Tab2Page],
+      declarations: [AddPage],
       imports: [IonicModule.forRoot(), HttpClientModule],
       providers: [DummyApiService, NavController, TodoShareService]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Tab2Page);
+    fixture = TestBed.createComponent(AddPage);
     component = fixture.componentInstance;
     dummyApiService = TestBed.inject(DummyApiService);
     navController = TestBed.inject(NavController);
@@ -30,7 +30,7 @@ describe('Tab2Page', () => {
     spyOn(console, 'log'); // Mock console.log calls
   }));
 
-  it('should create the Tab2Page', () => {
+  it('should create the AddPage', () => {
     expect(component).toBeTruthy();
   });
 
@@ -52,7 +52,7 @@ describe('Tab2Page', () => {
     expect(component.todoText).toEqual('');
     expect(component.completed).toEqual(false);
     expect(todoShareService.sharedTodo).toContain(newTodo);
-    expect(navController.navigateForward).toHaveBeenCalledWith('tabs/tab1');
+    expect(navController.navigateForward).toHaveBeenCalledWith('tabs/todo');
   });
 
   it('should not save an empty todo', () => {

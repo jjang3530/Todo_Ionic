@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { DummyApiService } from './../services/dummy-api.service';
+
+import { Component, OnInit  } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
+import { DummyApiService } from '../services/dummy-api.service';
 import { Todo } from '../models/todo.model';
 import { ModalController } from '@ionic/angular';
 import { EditTodoModalComponent } from '../edit-todo-modal/edit-todo-modal.component';
 import { TodoShareService } from '../services/todo-share.service';
 
 @Component({
-  selector: 'app-tab3',
-  templateUrl: 'tab3.page.html',
-  styleUrls: ['tab3.page.scss']
+  selector: 'app-todo',
+  templateUrl: 'todo.page.html',
+  styleUrls: ['todo.page.scss']
 })
-export class Tab3Page implements OnInit {
-  completedTodos: Todo[] = [];
+export class TodoPage implements OnInit {
+  todos: Todo[] = [];
 
   dumyUpdate = {
     id: "17",
@@ -22,6 +23,7 @@ export class Tab3Page implements OnInit {
   }
 
   dumyAdd = {
+    id: "1",
     todo: "Update Message",
     completed: false,
     userId: "1"
@@ -33,33 +35,27 @@ export class Tab3Page implements OnInit {
     private modalController: ModalController,
     private todoShareService: TodoShareService
   ) {}
-  
+
+  ionViewDidEnter() {
+    console.log('ionViewDidEnter1111');
+    if (this.todoShareService.sharedTodo) {
+      console.log('shared todo 1111111111');
+      const sharedTodos: Todo[] = this.todoShareService.sharedTodo;
+        this.todos.unshift(...sharedTodos);
+      this.todoShareService.sharedTodo = null; // Reset the shared todo
+      console.log('++++++added todo list', this.todos);
+    }
+  }
+
   ngOnInit() {
     this.fetchTodos();
   }
 
-  ionViewDidEnter() {
-    this.checkShredTodo();
-  }
-
-
-
   fetchTodos() {
     this.dummyApiService.getTodoData().subscribe(response => {
-      this.completedTodos = response.filter(todo => todo.completed === true);
-      console.log('completedTodos init', this.completedTodos);
-      this.checkShredTodo();
+      this.todos = response.filter(todo => todo.completed === false);
+      console.log('todos init', this.todos);
     });
-  }
-
-  checkShredTodo() {
-    console.log('ionViewDidEnter3333', this.completedTodos.length);
-    if (this.todoShareService.sharedTodo && this.completedTodos.length !== 0) {
-      console.log('shared todo 3333333333');
-      const sharedTodos: Todo[] = this.todoShareService.sharedTodo;
-      this.completedTodos.unshift(...sharedTodos);
-      this.todoShareService.sharedTodo = null; // Reset the shared todo
-    }
   }
 
   async openActionSheet(todo: Todo) {
@@ -68,7 +64,7 @@ export class Tab3Page implements OnInit {
       buttons: [
         {
           // text: todo.completed ? 'Mark as Incomplete' : 'Mark as Complete',
-          text: 'Mark as Incompleted',
+          text: 'Mark as Completed',
           handler: () => {
             this.toggleComplete(todo);
           }
@@ -97,13 +93,12 @@ export class Tab3Page implements OnInit {
   }
 
   async toggleComplete(todo: Todo) {
-    todo.completed = false;
+    todo.completed = true;
   
     // Call the service method to update the todo with the new completed status
     this.dummyApiService.updateTodoData(todo).subscribe(() => {
       // Handle successful update
-      console.log("Todo marked as Incomplete:", todo);
-      
+      console.log("Todo marked as complete:", todo);
       // Update the shared todo in the TodoShareService
       if (!this.todoShareService.sharedTodo) {
         this.todoShareService.sharedTodo = [];
@@ -111,11 +106,10 @@ export class Tab3Page implements OnInit {
       this.todoShareService.sharedTodo.push(todo);
     });
 
-    // Remove the Incompleted todo from the completedTodos list
-    this.completedTodos = this.completedTodos.filter(item => item.id !== todo.id);
+    // Remove the completed todo from the todos list
+    this.todos = this.todos.filter(item => item.id !== todo.id);
   }
   
-
   async editTodo(todo: Todo) {
     console.log('Edit:', todo);
     // Implement your edit logic here
@@ -130,9 +124,9 @@ export class Tab3Page implements OnInit {
       if (result.role === 'save' && result.data) {
         const updatedTodo: Todo = result.data;
         // Update the todo in the current list
-        const index = this.completedTodos.findIndex(t => t.id === updatedTodo.id);
+        const index = this.todos.findIndex(t => t.id === updatedTodo.id);
         if (index !== -1) {
-          this.completedTodos[index] = { ...updatedTodo }; // Update the todo with the edited values
+          this.todos[index] = { ...updatedTodo }; // Update the todo with the edited values
         }
       }
     });
@@ -140,8 +134,6 @@ export class Tab3Page implements OnInit {
     return await modal.present();
   }
   
-  
-
   deleteTodo(todo: Todo) {
     console.log('Delete:', todo);
     // Implement your delete logic here
@@ -150,8 +142,8 @@ export class Tab3Page implements OnInit {
         // Handle successful deletion
         console.log("Todo deleted:", todo);
       });
-    // Remove the todo from the completedTodos list
-    this.completedTodos = this.completedTodos.filter(item => item.id !== todo.id);
+      // Remove the todo from the todos list
+      this.todos = this.todos.filter(item => item.id !== todo.id);
     }
   }
 }

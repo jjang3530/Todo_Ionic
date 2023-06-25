@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { Todo } from '../models/todo.model';
-import { DummyApiService } from './../services/dummy-api.service';
+import { DummyApiService } from '../services/dummy-api.service';
 import { NavController } from '@ionic/angular';
 import { TodoShareService } from '../services/todo-share.service';
 
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss'],
+  selector: 'app-add',
+  templateUrl: 'add.page.html',
+  styleUrls: ['add.page.scss'],
 })
-export class Tab2Page {
+export class AddPage {
   todoText: string = '';
   completed: boolean = false;
   addId: number = 31;
@@ -50,8 +50,8 @@ export class Tab2Page {
         this.addId++;
         console.log('addId', this.addId);
     
-        // Redirect to tabs/tab1
-        this.navController.navigateForward('tabs/tab1');
+        // Redirect to tabs/todo
+        this.navController.navigateForward('tabs/todo');
       },
       error: (error) => {
         // Handle error

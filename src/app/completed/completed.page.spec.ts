@@ -1,16 +1,16 @@
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Tab3Page } from './tab3.page';
-import { DummyApiService } from './../services/dummy-api.service';
+import { CompletedPage } from './completed.page';
+import { DummyApiService } from '../services/dummy-api.service';
 import { Todo } from '../models/todo.model';
 import { TodoShareService } from '../services/todo-share.service';
 import { of } from 'rxjs';
 import { EditTodoModalComponent } from '../edit-todo-modal/edit-todo-modal.component';
 
-describe('Tab3Page', () => {
-  let component: Tab3Page;
-  let fixture: ComponentFixture<Tab3Page>;
+describe('CompletedPage', () => {
+  let component: CompletedPage;
+  let fixture: ComponentFixture<CompletedPage>;
   let dummyApiService: DummyApiService;
   let httpMock: HttpTestingController;
   let todoShareService: TodoShareService;
@@ -18,12 +18,12 @@ describe('Tab3Page', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [Tab3Page],
+      declarations: [CompletedPage],
       imports: [IonicModule.forRoot(), HttpClientTestingModule],
       providers: [DummyApiService, TodoShareService, ModalController]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Tab3Page);
+    fixture = TestBed.createComponent(CompletedPage);
     component = fixture.componentInstance;
     dummyApiService = TestBed.inject(DummyApiService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -37,7 +37,7 @@ describe('Tab3Page', () => {
     httpMock.verify();
   });
 
-  it('should create the Tab3Page', () => {
+  it('should create the CompletedPage', () => {
     expect(component).toBeTruthy();
   });
 
