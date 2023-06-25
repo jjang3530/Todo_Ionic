@@ -14,10 +14,10 @@
   </ion-header>
 
   <ion-list>
-    <ion-card *ngFor="let todo of completedTodos" (click)="openActionSheet(todo)">
-      <!-- <ion-card-header [color]="'primary'"> -->
-      <ion-card-header [color]="todo.completed ? 'danger' : 'primary'">
-        <ion-card-title>{{ todo.todo }}</ion-card-title>
+    <ion-card class="todo-card" *ngFor="let todo of completedTodos" (click)="openActionSheet(todo)">
+      <!-- <ion-card-header [color]="'danger'"> -->
+      <ion-card-header class="card">
+        <ion-card-title class="todo-title">{{ todo.todo }}</ion-card-title>
       </ion-card-header>
     </ion-card>
   </ion-list>

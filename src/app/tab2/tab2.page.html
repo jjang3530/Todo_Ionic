@@ -13,16 +13,22 @@
     </ion-toolbar>
   </ion-header>
   <ion-list class="todo-list">
-    <ion-textarea
+    <ion-item>
+      <ion-label id="todoLabel" class="visually-hidden">Enter your Todo</ion-label>
+      <ion-textarea
+        id="todotext"
         [(ngModel)]="todoText"
         placeholder="Enter your Todo"
         autocorrect="on"
         rows="10"
         required
-    ></ion-textarea>
+        aria-labelledby="todoLabel"
+      ></ion-textarea>
+    </ion-item>
+    
   </ion-list>
 
   <div class="button-container">
-    <ion-button class="save-button" (click)="saveTodo()">ADD</ion-button>
+    <ion-button class="save-button" (click)="saveTodo()" aria-label="Add Todo">ADD</ion-button>
   </div>
 </ion-content>

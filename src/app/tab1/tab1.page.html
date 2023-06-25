@@ -16,7 +16,7 @@
   <ion-list >
     <ion-card class="todo-card" *ngFor="let todo of todos" (click)="openActionSheet(todo)">
       <!-- <ion-card-header [color]="'primary'"> -->
-      <ion-card-header [color]="todo.completed ? 'danger' : 'primary'">
+      <ion-card-header class="card">
         <ion-card-title class="todo-title">{{ todo.todo }}</ion-card-title>
       </ion-card-header>
     </ion-card>
