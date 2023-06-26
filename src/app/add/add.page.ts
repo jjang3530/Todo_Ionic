@@ -10,15 +10,15 @@ import { TodoShareService } from '../services/todo-share.service';
   styleUrls: ['add.page.scss'],
 })
 export class AddPage {
-  todoText: string = '';
-  completed: boolean = false;
-  addId: number = 31;
+  todoText = '';
+  completed = false;
+  addId = 31;
 
   constructor(
     private dummyApiService: DummyApiService,
     private navController: NavController,
     private todoShareService: TodoShareService
-    ) {}
+  ) {}
 
   saveTodo() {
     if (!this.todoText) {
@@ -30,39 +30,46 @@ export class AddPage {
       id: this.addId,
       todo: this.todoText,
       completed: false,
-      userId: 1
+      userId: 1,
     };
 
     this.dummyApiService.createTodoData(newTodo).subscribe({
       next: (response) => {
         // Handle successful save
         console.log('Todo saved:', response);
-    
+
         // Clear the input fields
-        this.todoText = '';
-        this.completed = false;
-    
+        this.clearInputFields();
+
         // Push the new todo to the sharedTodo array in the TodoShareService
-        if (!this.todoShareService.sharedTodo) {
-          this.todoShareService.sharedTodo = [];
-        }
-        this.todoShareService.sharedTodo.push(newTodo);
-        this.addId++;
-        console.log('addId', this.addId);
-    
+        this.addNewTodoToSharedList(newTodo);
+
         // Redirect to tabs/todo
         this.navController.navigateForward('tabs/todo');
       },
       error: (error) => {
         // Handle error
         console.error('Failed to save todo:', error);
-      }
+      },
     });
   }
 
   cancelTodo() {
     // Clear the input fields
+    this.clearInputFields();
+  }
+
+  private clearInputFields() {
     this.todoText = '';
     this.completed = false;
+  }
+
+  private addNewTodoToSharedList(todo: Todo) {
+    if (!this.todoShareService.sharedTodo) {
+      this.todoShareService.sharedTodo = [];
+    }
+    this.todoShareService.sharedTodo.push(todo);
+    this.addId++;
+    console.log('addId', this.addId);
   }
 }

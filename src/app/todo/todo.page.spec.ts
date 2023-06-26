@@ -30,7 +30,7 @@ describe('TodoPage', () => {
     todoShareService = TestBed.inject(TodoShareService);
     modalController = TestBed.inject(ModalController);
 
-    spyOn(console, 'log'); // Mock console.log calls
+    spyOn(console, 'log');
   }));
 
   afterEach(() => {
@@ -72,13 +72,11 @@ describe('TodoPage', () => {
     const mockTodo: Todo = { id: 1, todo: 'Test Todo', completed: false, userId: 1 };
     const updatedTodo: Todo = { id: 1, todo: 'Updated Todo', completed: false, userId: 1 };
   
-    // Mock the modal controller create method
     spyOn(modalController, 'create').and.returnValue(Promise.resolve({
       present: () => Promise.resolve(),
       onDidDismiss: () => Promise.resolve({ role: 'save', data: updatedTodo })
     } as any));
   
-    // Mock the HTTP request
     spyOn(dummyApiService, 'getTodoData').and.returnValue(of([mockTodo]));
   
     fixture.detectChanges();
@@ -91,7 +89,6 @@ describe('TodoPage', () => {
     });
     expect(component.todos[0]).toEqual(updatedTodo);
   });
-  
 
   it('should delete a todo', async () => {
     const mockTodo: Todo = { id: 1, todo: 'Test Todo', completed: false, userId: 1 };

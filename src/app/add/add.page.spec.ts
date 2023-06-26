@@ -14,21 +14,21 @@ describe('AddPage', () => {
   let navController: NavController;
   let todoShareService: TodoShareService;
 
-  beforeEach(async(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [AddPage],
       imports: [IonicModule.forRoot(), HttpClientModule],
-      providers: [DummyApiService, NavController, TodoShareService]
+      providers: [DummyApiService, NavController, TodoShareService],
     }).compileComponents();
-
+  
     fixture = TestBed.createComponent(AddPage);
     component = fixture.componentInstance;
     dummyApiService = TestBed.inject(DummyApiService);
     navController = TestBed.inject(NavController);
     todoShareService = TestBed.inject(TodoShareService);
-
-    spyOn(console, 'log'); // Mock console.log calls
-  }));
+  
+    spyOn(console, 'log');
+  });  
 
   it('should create the AddPage', () => {
     expect(component).toBeTruthy();
@@ -39,7 +39,7 @@ describe('AddPage', () => {
       id: 31,
       todo: 'Test Todo',
       completed: false,
-      userId: 1
+      userId: 1,
     };
 
     spyOn(dummyApiService, 'createTodoData').and.returnValue(of({}));

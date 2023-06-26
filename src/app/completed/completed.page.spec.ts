@@ -16,7 +16,7 @@ describe('CompletedPage', () => {
   let todoShareService: TodoShareService;
   let modalController: ModalController;
 
-  beforeEach(async(() => {
+  beforeEach(async() => {
     TestBed.configureTestingModule({
       declarations: [CompletedPage],
       imports: [IonicModule.forRoot(), HttpClientTestingModule],
@@ -30,8 +30,8 @@ describe('CompletedPage', () => {
     todoShareService = TestBed.inject(TodoShareService);
     modalController = TestBed.inject(ModalController);
 
-    spyOn(console, 'log'); // Mock console.log calls
-  }));
+    spyOn(console, 'log');
+  });
 
   afterEach(() => {
     httpMock.verify();
@@ -55,7 +55,7 @@ describe('CompletedPage', () => {
     expect(dummyApiService.getTodoData).toHaveBeenCalled();
   });
 
-  it('should mark a todo as incompleted', async () => {
+  it('should mark a todo as incomplete', async () => {
     const mockTodo: Todo = { id: 1, todo: 'Test Todo', completed: true, userId: 1 };
 
     spyOn(dummyApiService, 'updateTodoData').and.returnValue(of({}));
@@ -71,27 +71,26 @@ describe('CompletedPage', () => {
   it('should edit a todo', async () => {
     const mockTodo: Todo = { id: 1, todo: 'Test Todo', completed: true, userId: 1 };
     const updatedTodo: Todo = { id: 1, todo: 'Updated Todo', completed: true, userId: 1 };
-  
+
     // Mock the modal controller create method
     spyOn(modalController, 'create').and.returnValue(Promise.resolve({
       present: () => Promise.resolve(),
       onDidDismiss: () => Promise.resolve({ role: 'save', data: updatedTodo })
     } as any));
-  
+
     // Mock the HTTP request
     spyOn(dummyApiService, 'getTodoData').and.returnValue(of([mockTodo]));
-  
+
     fixture.detectChanges();
-  
+
     await component.editTodo(mockTodo);
-  
+
     expect(modalController.create).toHaveBeenCalledWith({
       component: EditTodoModalComponent,
       componentProps: { todo: { ...mockTodo } }
     });
     expect(component.completedTodos[0]).toEqual(updatedTodo);
   });
-  
 
   it('should delete a todo', async () => {
     const mockTodo: Todo = { id: 1, todo: 'Test Todo', completed: true, userId: 1 };

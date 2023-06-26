@@ -13,20 +13,6 @@ import { TodoShareService } from '../services/todo-share.service';
 })
 export class CompletedPage implements OnInit {
   completedTodos: Todo[] = [];
-
-  dumyUpdate = {
-    id: "17",
-    todo: "Update Message",
-    completed: false,
-    userId: "1"
-  }
-
-  dumyAdd = {
-    todo: "Update Message",
-    completed: false,
-    userId: "1"
-  }
-
   constructor(
     private dummyApiService: DummyApiService,
     private actionSheetController: ActionSheetController,
@@ -39,26 +25,21 @@ export class CompletedPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.checkShredTodo();
+    this.checkSharedTodo();
   }
-
-
 
   fetchTodos() {
     this.dummyApiService.getTodoData().subscribe(response => {
-      this.completedTodos = response.filter(todo => todo.completed === true);
-      console.log('completedTodos init', this.completedTodos);
-      this.checkShredTodo();
+      this.completedTodos = response.filter(todo => todo.completed);
+      this.checkSharedTodo();
     });
   }
 
-  checkShredTodo() {
-    console.log('ionViewDidEnter3333', this.completedTodos.length);
+  checkSharedTodo() {
     if (this.todoShareService.sharedTodo && this.completedTodos.length !== 0) {
-      console.log('shared todo 3333333333');
       const sharedTodos: Todo[] = this.todoShareService.sharedTodo;
       this.completedTodos.unshift(...sharedTodos);
-      this.todoShareService.sharedTodo = null; // Reset the shared todo
+      this.todoShareService.sharedTodo = null;
     }
   }
 
@@ -67,24 +48,17 @@ export class CompletedPage implements OnInit {
       header: 'Todo Actions',
       buttons: [
         {
-          // text: todo.completed ? 'Mark as Incomplete' : 'Mark as Complete',
-          text: 'Mark as Incompleted',
-          handler: () => {
-            this.toggleComplete(todo);
-          }
+          text: 'Mark as Incomplete',
+          handler: () => this.toggleComplete(todo)
         },
         {
           text: 'Edit',
-          handler: () => {
-            this.editTodo(todo);
-          }
+          handler: () => this.editTodo(todo)
         },
         {
           text: 'Delete',
           role: 'destructive',
-          handler: () => {
-            this.deleteTodo(todo);
-          }
+          handler: () => this.deleteTodo(todo)
         },
         {
           text: 'Cancel',
@@ -96,62 +70,49 @@ export class CompletedPage implements OnInit {
     await actionSheet.present();
   }
 
-  async toggleComplete(todo: Todo) {
+  toggleComplete(todo: Todo) {
     todo.completed = false;
-  
-    // Call the service method to update the todo with the new completed status
     this.dummyApiService.updateTodoData(todo).subscribe(() => {
-      // Handle successful update
       console.log("Todo marked as Incomplete:", todo);
       
-      // Update the shared todo in the TodoShareService
       if (!this.todoShareService.sharedTodo) {
         this.todoShareService.sharedTodo = [];
       }
       this.todoShareService.sharedTodo.push(todo);
     });
 
-    // Remove the Incompleted todo from the completedTodos list
     this.completedTodos = this.completedTodos.filter(item => item.id !== todo.id);
   }
   
-
   async editTodo(todo: Todo) {
     console.log('Edit:', todo);
-    // Implement your edit logic here
     const modal = await this.modalController.create({
       component: EditTodoModalComponent,
       componentProps: {
-        todo: { ...todo } // Create a shallow copy of the todo object to avoid modifying the original object
+        todo: { ...todo }
       }
     });
   
     modal.onDidDismiss().then((result) => {
       if (result.role === 'save' && result.data) {
         const updatedTodo: Todo = result.data;
-        // Update the todo in the current list
         const index = this.completedTodos.findIndex(t => t.id === updatedTodo.id);
         if (index !== -1) {
-          this.completedTodos[index] = { ...updatedTodo }; // Update the todo with the edited values
+          this.completedTodos[index] = { ...updatedTodo };
         }
       }
     });
   
     return await modal.present();
   }
-  
-  
 
   deleteTodo(todo: Todo) {
     console.log('Delete:', todo);
-    // Implement your delete logic here
     if (todo.id) {
       this.dummyApiService.deleteTodoData(todo.id).subscribe(() => {
-        // Handle successful deletion
         console.log("Todo deleted:", todo);
       });
-    // Remove the todo from the completedTodos list
-    this.completedTodos = this.completedTodos.filter(item => item.id !== todo.id);
+      this.completedTodos = this.completedTodos.filter(item => item.id !== todo.id);
     }
   }
 }

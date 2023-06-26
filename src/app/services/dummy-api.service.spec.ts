@@ -17,7 +17,6 @@ describe('DummyApiService', () => {
   });
 
   afterEach(() => {
-    // Verify that there are no outstanding HTTP requests
     httpMock.verify();
   });
 
@@ -41,30 +40,28 @@ describe('DummyApiService', () => {
 
   it('should create todo data', () => {
     const mockTodo: Todo = { id: 1, todo: 'Test Todo', completed: false, userId: 1 };
-  
+
     service.createTodoData(mockTodo).subscribe((response) => {
       expect(response).toBeDefined();
-      // Add additional assertions if needed
     });
-  
+
     const request = httpMock.expectOne(`${service.apiUrl}/add`);
     expect(request.request.method).toBe('POST');
-    expect(request.request.body).toBeDefined;
-    request.flush({}); // Pass the expected mock response here
+    expect(request.request.body).toBeDefined();
+    request.flush({});
   });
-  
+
   it('should update todo data', () => {
     const mockTodo: Todo = { id: 1, todo: 'Test Todo', completed: true, userId: 1 };
-  
+
     service.updateTodoData(mockTodo).subscribe((response) => {
       expect(response).toBeDefined();
-      // Add additional assertions if needed
     });
-  
+
     const request = httpMock.expectOne(`${service.apiUrl}/${mockTodo.id}`);
     expect(request.request.method).toBe('PUT');
-    expect(request.request.body).toBeDefined;
-    request.flush({}); // Pass the expected mock response here
+    expect(request.request.body).toBeDefined();
+    request.flush({});
   });
 
   it('should delete todo data', () => {
@@ -72,11 +69,10 @@ describe('DummyApiService', () => {
 
     service.deleteTodoData(todoId).subscribe((response) => {
       expect(response).toBeDefined();
-      // Add additional assertions if needed
     });
 
     const request = httpMock.expectOne(`${service.apiUrl}/${todoId}`);
     expect(request.request.method).toBe('DELETE');
-    request.flush({}); // You can pass a mock response if needed
+    request.flush({});
   });
 });
